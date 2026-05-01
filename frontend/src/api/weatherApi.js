@@ -3,7 +3,6 @@ const API_URL = "https://weather-app-o67m.onrender.com";
 async function request(endpoint) {
   try {
     const response = await fetch(`${API_URL}${endpoint}`);
-
     const data = await response.json();
 
     if (!response.ok) {
