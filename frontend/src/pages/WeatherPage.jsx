@@ -36,18 +36,10 @@ function formatCityTime(unixTimestamp, timezoneOffset) {
     });
 }
 
-function formatGMT(timezoneOffset) {
-  const sign = timezoneOffset >= 0 ? "+" : "-";
-  const absOffset = Math.abs(timezoneOffset);
-
-  const hours = Math.floor(absOffset / 3600);
-  const minutes = Math.floor((absOffset % 3600) / 60);
-
-  return `GMT${sign}${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
-}
-
 function getWeatherBackground(desc) {
-  if (!desc) return "/weather-images/default.jpg";
+  const imageBase = `${import.meta.env.BASE_URL}weather-images/`;
+
+  if (!desc) return `${imageBase}cloudy.jpg`;
 
   desc = desc.toLowerCase();
 
@@ -67,30 +59,30 @@ function getWeatherBackground(desc) {
   ];
 
   if (snowWords.some(word => desc.includes(word))) {
-    return "/weather-images/snow.jpg";
+    return `${imageBase}snow.jpg`;
   }
 
   if (rainWords.some(word => desc.includes(word))) {
-    return "/weather-images/rainy.jpg";
+    return `${imageBase}rainy.jpg`;
   }
 
   if (fogWords.some(word => desc.includes(word))) {
-    return "/weather-images/fog.jpg";
+    return `${imageBase}fog.jpg`;
   }
 
   if (stormWords.some(word => desc.includes(word))) {
-    return "/weather-images/storm.jpg";
+    return `${imageBase}storm.jpg`;
   }
 
   if (sunWords.some(word => desc.includes(word))) {
-    return "/weather-images/sunny.jpg";
+    return `${imageBase}sunny.jpg`;
   }
 
   if (cloudWords.some(word => desc.includes(word))) {
-    return "/weather-images/cloudy.jpg";
+    return `${imageBase}cloudy.jpg`;
   }
 
-  return "/weather-images/default.jpg";
+  return `${imageBase}cloudy.jpg`;
 }
 
 function getWeatherMessage(desc) {
@@ -149,6 +141,102 @@ function getWeatherMessage(desc) {
   }
 
   return "Verifică prognoza detaliată pentru mai multe informații.";
+}
+
+function getAirQualityInfo(value, type) {
+  if (type === "pm25") {
+    if (value <= 12) {
+      return {
+        level: "Bun",
+        className: "air-good",
+        message: "Aer curat. Poți respira adânc fără griji! 🌿"
+      };
+    }
+
+    if (value <= 35) {
+      return {
+        level: "Moderat",
+        className: "air-moderate",
+        message: "Calitate moderată. Persoanele sensibile ar trebui să evite efortul intens."
+      };
+    }
+
+    if (value <= 55) {
+      return {
+        level: "Nesănătos",
+        className: "air-unhealthy",
+        message: "Aer nesănătos. Evită activitățile în aer liber prelungite."
+      };
+    }
+
+    return {
+      level: "Periculos",
+      className: "air-danger",
+      message: "Nivel ridicat de particule fine. Evită expunerea prelungită. 🚨"
+    };
+  }
+
+  if (type === "pm10") {
+    if (value <= 20) {
+      return {
+        level: "Bun",
+        className: "air-good",
+        message: "Aer bun. Particulele grosiere sunt la un nivel sigur."
+      };
+    }
+
+    if (value <= 50) {
+      return {
+        level: "Moderat",
+        className: "air-moderate",
+        message: "Nivel moderat. Poate afecta persoanele cu afecțiuni respiratorii."
+      };
+    }
+
+    if (value <= 100) {
+      return {
+        level: "Nesănătos",
+        className: "air-unhealthy",
+        message: "Aer nesănătos. Evită efortul intens în aer liber."
+      };
+    }
+
+    return {
+      level: "Periculos",
+      className: "air-danger",
+      message: "Nivel periculos de PM10. Evită expunerea. 🛑"
+    };
+  }
+
+  if (type === "co") {
+    if (value <= 4000) {
+      return {
+        level: "Bun",
+        className: "air-good",
+        message: "Nivel sigur de monoxid de carbon. 🌬️"
+      };
+    }
+
+    if (value <= 9000) {
+      return {
+        level: "Moderat",
+        className: "air-moderate",
+        message: "Nivel moderat de CO. Evită zonele foarte aglomerate."
+      };
+    }
+
+    return {
+      level: "Periculos",
+      className: "air-danger",
+      message: "Concentrație periculoasă de CO! Evită expunerea. ⚠️"
+    };
+  }
+
+  return {
+    level: "Necunoscut",
+    className: "air-unknown",
+    message: "Date indisponibile."
+  };
 }
 
 export default function WeatherPage() {
@@ -356,12 +444,26 @@ export default function WeatherPage() {
 
   const backgroundImage = today
     ? getWeatherBackground(today.weather[0].description)
-    : "/weather-images/default.jpg";
+    : `${import.meta.env.BASE_URL}weather-images/cloudy.jpg`;
+
+  const pm25Info = airComponents
+    ? getAirQualityInfo(airComponents.pm2_5, "pm25")
+    : null;
+
+  const pm10Info = airComponents
+    ? getAirQualityInfo(airComponents.pm10, "pm10")
+    : null;
+
+  const coInfo = airComponents
+    ? getAirQualityInfo(airComponents.co, "co")
+    : null;
 
   return (
     <div
       className="page"
-      style={{ backgroundImage: `url(${backgroundImage})` }}
+      style={{
+        backgroundImage: `url(${backgroundImage})`
+      }}
     >
       <header className="header">
         <h1>Vremea în orașul tău</h1>
@@ -419,7 +521,9 @@ export default function WeatherPage() {
                     alt="iconiță vreme"
                   />
 
-                  <p className="description">{today.weather[0].description}</p>
+                  <p className="description">
+                    {today.weather[0].description}
+                  </p>
 
                   <p className="weather-message">
                     {getWeatherMessage(today.weather[0].description)}
@@ -434,42 +538,48 @@ export default function WeatherPage() {
                   </p>
                 </div>
 
-                <div className="weather-details-grid">
-                  <div className="detail-box">
-                    <span className="detail-icon">💨</span>
-                    <span className="detail-label">Vânt: </span>
-                    <strong>
-                      {Math.round(today.wind.speed * 3.6)} km/h
-                    </strong>
-                    <strong>{getWindDirection(today.wind.deg)}</strong>
+                <div className="weather-info-boxes">
+                  <div className="weather-info-box">
+                    <span className="info-icon">💨</span>
+
+                    <div>
+                      <span className="info-label">Vânt</span>
+                      <strong>
+                        {Math.round(today.wind.speed * 3.6)} km/h dinspre{" "}
+                        {getWindDirection(today.wind.deg)}
+                      </strong>
+                    </div>
                   </div>
 
-                  <div className="detail-box">
-                    <span className="detail-icon">💧</span>
-                    <span className="detail-label">Umiditate: </span>
-                    <strong>{today.main.humidity}%</strong>
+                  <div className="weather-info-box">
+                    <span className="info-icon">💧</span>
+
+                    <div>
+                      <span className="info-label">Umiditate</span>
+                      <strong>{today.main.humidity}%</strong>
+                    </div>
                   </div>
 
-                  <div className="detail-box">
-                    <span className="detail-icon">🌅 </span>
-                    <span className="detail-label">Răsărit: </span>
-                    <strong>
-                      {formatCityTime(weatherData.city.sunrise, timezoneOffset)}
-                    </strong>
+                  <div className="weather-info-box">
+                    <span className="info-icon">🌅</span>
+
+                    <div>
+                      <span className="info-label">Răsărit</span>
+                      <strong>
+                        {formatCityTime(weatherData.city.sunrise, timezoneOffset)}
+                      </strong>
+                    </div>
                   </div>
 
-                  <div className="detail-box">
-                    <span className="detail-icon">🌇 </span>
-                    <span className="detail-label">Apus: </span>
-                    <strong>
-                      {formatCityTime(weatherData.city.sunset, timezoneOffset)}
-                    </strong>
-                  </div>
+                  <div className="weather-info-box">
+                    <span className="info-icon">🌇</span>
 
-                  <div className="detail-box full-width">
-                    <span className="detail-icon">🕒 </span>
-                    <span className="detail-label">Fus orar: </span>
-                    <strong>{formatGMT(timezoneOffset)}</strong>
+                    <div>
+                      <span className="info-label">Apus</span>
+                      <strong>
+                        {formatCityTime(weatherData.city.sunset, timezoneOffset)}
+                      </strong>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -540,13 +650,45 @@ export default function WeatherPage() {
         )}
 
         {airComponents && !loading && (
-          <section className="card">
+          <section className="card air-quality-card">
             <h3>Calitatea aerului</h3>
 
-            <div className="air-block">
-              <p>PM2.5: {airComponents.pm2_5} µg/m³</p>
-              <p>PM10: {airComponents.pm10} µg/m³</p>
-              <p>CO: {airComponents.co} µg/m³</p>
+            <div className="air-sections">
+              <section className="air-section">
+                <h4>🌫️ Particule fine PM2.5</h4>
+
+                <p className={`air-value ${pm25Info.className}`}>
+                  {airComponents.pm2_5} µg/m³ – {pm25Info.level}
+                </p>
+
+                <p className="air-message">
+                  {pm25Info.message}
+                </p>
+              </section>
+
+              <section className="air-section">
+                <h4>🌪️ Particule grosiere PM10</h4>
+
+                <p className={`air-value ${pm10Info.className}`}>
+                  {airComponents.pm10} µg/m³ – {pm10Info.level}
+                </p>
+
+                <p className="air-message">
+                  {pm10Info.message}
+                </p>
+              </section>
+
+              <section className="air-section">
+                <h4>🧪 Monoxid de carbon CO</h4>
+
+                <p className={`air-value ${coInfo.className}`}>
+                  {airComponents.co} µg/m³ – {coInfo.level}
+                </p>
+
+                <p className="air-message">
+                  {coInfo.message}
+                </p>
+              </section>
             </div>
           </section>
         )}

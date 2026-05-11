@@ -8,9 +8,6 @@ body {
   margin: 0;
   min-height: 100vh;
   background: linear-gradient(135deg, #dff3ff, #f7fbff);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   color: #222;
 }
 
@@ -61,32 +58,109 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* CARD VREME CURENTĂ */
+
 .current-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  margin-bottom: 20px;
+  max-width: 900px;
+  margin: 0 auto 25px auto;
+  padding: 28px;
+  border-radius: 12px;
+}
+
+.current-card h2 {
+  margin-bottom: 25px;
+  font-size: 30px;
+}
+
+.current-weather-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weather-main-info {
   text-align: center;
 }
 
-.current-card img {
-  width: 90px;
-  height: 90px;
+.weather-icon {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
 }
 
 .description {
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 700;
   text-transform: capitalize;
+  margin: 5px 0;
 }
 
 .weather-message {
-  margin-top: 10px;
+  margin: 10px auto 15px auto;
   font-style: italic;
   font-size: 15px;
-  color: #333;
+  color: #444;
+  max-width: 320px;
   text-align: center;
 }
+
+.temperature-main {
+  font-size: 42px;
+  font-weight: 800;
+  color: #00796b;
+  margin-top: 10px;
+}
+
+.temperature-secondary {
+  margin-top: 0;
+  color: #666;
+  font-size: 18px;
+}
+
+/* CASETE BLEU PENTRU VÂNT, UMIDITATE, RĂSĂRIT, APUS */
+
+.weather-info-boxes {
+  width: 100%;
+  max-width: 360px;
+  margin: 24px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.weather-info-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #d6f5f7;
+  border: 1px solid #00838f;
+  color: #006064;
+  text-align: left;
+  box-shadow: none;
+}
+
+.info-icon {
+  font-size: 22px;
+  width: 28px;
+  text-align: center;
+}
+
+.info-label {
+  display: block;
+  font-size: 14px;
+  color: #00747a;
+  margin-bottom: 2px;
+}
+
+.weather-info-box strong {
+  display: block;
+  font-size: 16px;
+  color: #004d55;
+}
+
+/* FORMULAR CĂUTARE */
 
 .search-form {
   background: rgba(255, 255, 255, 0.95);
@@ -105,6 +179,10 @@ body {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.search-wrapper {
+  position: relative;
 }
 
 .search-row {
@@ -138,9 +216,7 @@ button:hover {
   background: #004d40;
 }
 
-.search-wrapper {
-  position: relative;
-}
+/* SUGESTII ORAȘE */
 
 .suggestions-list {
   list-style: none;
@@ -153,10 +229,13 @@ button:hover {
   max-width: 700px;
   position: absolute;
   left: 0;
+  right: 0;
   top: 55px;
   z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   text-align: left;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .suggestion-item {
@@ -168,6 +247,8 @@ button:hover {
 .suggestion-item:hover {
   background-color: #e0f2f1;
 }
+
+/* MESAJE */
 
 .error-text {
   color: #c62828;
@@ -191,6 +272,8 @@ button:hover {
   margin: 20px 0;
 }
 
+/* PROGNOZA PE ORE ȘI PE 5 ZILE */
+
 .forecast-row,
 .hourly-row {
   display: flex;
@@ -211,12 +294,9 @@ button:hover {
   scroll-snap-align: start;
 }
 
-.forecast-row {
-  display: flex;
-  overflow-x: auto;
-  gap: 12px;
-  padding: 10px 20px;
-  scroll-snap-type: x mandatory;
+.hour-card img {
+  width: 60px;
+  height: 60px;
 }
 
 .forecast-card {
@@ -240,44 +320,70 @@ button:hover {
   border: 1px solid #ff9800;
 }
 
-.sun-times {
-  margin-top: 10px;
-  font-size: 14px;
+/* CALITATEA AERULUI */
+
+.air-quality-card {
+  max-width: 900px;
+  margin: 0 auto 20px auto;
+}
+
+.air-sections {
+  width: 100%;
+  max-width: 620px;
+  margin: 25px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.air-section {
+  background: #d6f5f7;
+  border: 1px solid #00838f;
+  border-radius: 10px;
+  padding: 18px 22px;
   text-align: center;
+  color: #004d55;
 }
 
-.air-block {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+.air-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  color: #004d55;
 }
 
-.good {
+.air-value {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 8px 0 12px;
+}
+
+.air-message {
+  font-size: 16px;
+  margin: 0;
+  color: #004d55;
+}
+
+.air-good {
   color: green;
-  font-weight: bold;
 }
 
-.moderate {
+.air-moderate {
   color: goldenrod;
-  font-weight: bold;
 }
 
-.unhealthy {
+.air-unhealthy {
   color: orange;
-  font-weight: bold;
 }
 
-.danger {
+.air-danger {
   color: red;
-  font-weight: bold;
 }
 
-.unknown {
+.air-unknown {
   color: gray;
-  font-weight: bold;
 }
+
+/* ALERTE METEO */
 
 .alert-card {
   background-color: #fff3cd;
@@ -313,6 +419,8 @@ button:hover {
   color: #424242;
   border-color: #bdbdbd;
 }
+
+/* ORAȘE SALVATE */
 
 .saved-cities {
   display: flex;
@@ -356,6 +464,26 @@ hr {
   margin: 10px 0;
 }
 
+/* RESPONSIVE */
+
+@media (max-width: 750px) {
+  .current-card h2 {
+    font-size: 24px;
+  }
+
+  .temperature-main {
+    font-size: 38px;
+  }
+
+  .weather-info-boxes {
+    max-width: 100%;
+  }
+
+  .air-sections {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 600px) {
   .page {
     padding: 20px 10px;
@@ -373,6 +501,11 @@ hr {
     width: 100%;
   }
 
+  .suggestions-list {
+    width: 100%;
+    top: 105px;
+  }
+
   .forecast-card,
   .hour-card {
     min-width: 140px;
@@ -384,314 +517,32 @@ hr {
     padding: 15px;
   }
 
-.current-card {
-  max-width: 900px;
-  margin: 0 auto 25px auto;
-  padding: 28px;
-}
-
-.current-card h2 {
-  margin-bottom: 25px;
-  font-size: 30px;
-}
-
-.current-weather-layout {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 25px;
-  align-items: center;
-}
-
-.weather-main-info {
-  background: rgba(255, 255, 255, 0.75);
-  border-radius: 18px;
-  padding: 24px;
-  text-align: center;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
-}
-
-.weather-icon {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-}
-
-.description {
-  font-size: 20px;
-  font-weight: 700;
-  text-transform: capitalize;
-  margin: 5px 0;
-}
-
-.weather-message {
-  margin: 10px auto 15px auto;
-  font-style: italic;
-  font-size: 15px;
-  color: #444;
-  max-width: 260px;
-}
-
-.temperature-main {
-  font-size: 48px;
-  font-weight: 800;
-  color: #00796b;
-  margin-top: 10px;
-}
-
-.temperature-secondary {
-  margin-top: 0;
-  color: #666;
-  font-size: 18px;
-}
-
-.weather-details-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-.detail-box {
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 16px;
-  padding: 16px;
-  min-height: 110px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.detail-icon {
-  font-size: 24px;
-}
-
-.detail-label {
-  font-size: 13px;
-  color: #666;
-}
-
-.detail-box strong {
-  font-size: 18px;
-  color: #222;
-}
-
-.detail-box small {
-  color: #666;
-  font-size: 13px;
-}
-
-.full-width {
-  grid-column: span 2;
-}
-
-@media (max-width: 750px) {
-  .current-weather-layout {
-    grid-template-columns: 1fr;
+  .current-card {
+    padding: 20px;
   }
 
-  .weather-details-grid {
-    grid-template-columns: 1fr;
+  .weather-icon {
+    width: 90px;
+    height: 90px;
   }
 
-  .full-width {
-    grid-column: span 1;
+  .weather-info-box {
+    padding: 10px 12px;
   }
 
-  .temperature-main {
-    font-size: 40px;
+  .air-section {
+    padding: 14px 16px;
   }
 
-  .current-card h2 {
-    font-size: 24px;
-  }
-}
-
-/* ===== DESIGN METEO TIP APLICAȚIE MOBILĂ ===== */
-
-.weather-hero {
-  position: relative;
-  overflow: hidden;
-  border-radius: 32px;
-  padding: 34px 28px 28px;
-  color: white;
-  text-align: left;
-  min-height: 720px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
-}
-
-.weather-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(45, 68, 120, 0.25),
-    rgba(18, 31, 66, 0.92)
-  );
-  z-index: 0;
-}
-
-.weather-hero > * {
-  position: relative;
-  z-index: 1;
-}
-
-.weather-hero.cloudy-bg {
-  background-image: url("./cloudy.jpg");
-}
-
-.weather-hero.sunny-bg {
-  background-image: url("./sunny.jpeg");
-}
-
-.weather-hero.rainy-bg {
-  background-image: url("./rainy.jpg");
-}
-
-.weather-hero.snow-bg {
-  background-image: url("./snow.jpg");
-}
-
-.weather-hero.fog-bg {
-  background-image: url("./fog.jpg");
-}
-
-.weather-hero.storm-bg {
-  background-image: url("./storm.jpg");
-}
-
-.weather-hero.default-bg {
-  background-image: url("./default.jpg");
-}
-
-.hero-city {
-  font-size: 38px;
-  font-weight: 700;
-  margin-bottom: 36px;
-}
-
-.hero-temp {
-  font-size: 118px;
-  font-weight: 700;
-  line-height: 0.9;
-  margin-bottom: 24px;
-}
-
-.hero-condition {
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 32px;
-  text-transform: capitalize;
-}
-
-.hero-details {
-  font-size: 21px;
-  font-weight: 600;
-  line-height: 1.35;
-  margin-bottom: 36px;
-}
-
-.hero-message {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 26px;
-}
-
-.hourly-glass {
-  margin-top: 20px;
-  padding: 22px 16px;
-  border-radius: 32px;
-  background: rgba(19, 33, 72, 0.68);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.13);
-}
-
-.hourly-list {
-  display: flex;
-  gap: 22px;
-  overflow-x: auto;
-  padding-bottom: 12px;
-}
-
-.hourly-list::-webkit-scrollbar {
-  height: 6px;
-}
-
-.hourly-list::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.3);
-  border-radius: 20px;
-}
-
-.hourly-item {
-  min-width: 76px;
-  text-align: center;
-  color: white;
-}
-
-.hourly-time {
-  font-size: 15px;
-  font-weight: 700;
-  opacity: 0.95;
-}
-
-.hourly-item img {
-  width: 48px;
-  height: 48px;
-  margin: 14px 0 8px;
-}
-
-.hourly-temp {
-  font-size: 32px;
-  font-weight: 700;
-}
-
-.hourly-rain {
-  margin-top: 24px;
-  font-size: 14px;
-  opacity: 0.85;
-}
-
-.hourly-link {
-  text-align: right;
-  margin-top: 14px;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.section-title {
-  margin: 28px 0 12px;
-  text-align: center;
-  color: #222;
-}
-
-@media (max-width: 500px) {
-  .weather-hero {
-    min-height: 680px;
-    padding: 28px 22px 24px;
-    border-radius: 28px;
+  .air-section h4 {
+    font-size: 17px;
   }
 
-  .hero-city {
-    font-size: 34px;
+  .air-value {
+    font-size: 16px;
   }
 
-  .hero-temp {
-    font-size: 98px;
+  .air-message {
+    font-size: 14px;
   }
-
-  .hero-condition {
-    font-size: 31px;
-  }
-
-  .hero-details {
-    font-size: 18px;
-  }
-}
-
 }
